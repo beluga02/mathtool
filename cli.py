@@ -2,7 +2,9 @@
 
 import argparse
 
-from calc import integration, series
+from calc import arrays, integration, series, sorting
+from calc.arrays import MIN_VALUE, MAX_VALUE
+from calc.sorting import METHODS
 
 
 def build_parser():
@@ -82,4 +84,72 @@ def build_parser():
         help="число прямоугольников (целое от 1 до 100000)",
     )
 
+    # --- fill: заполнение массива случайными числами ---
+    fill = commands.add_parser(
+        "fill", allow_abbrev=False,
+        help="создать массив случайных целых чисел",
+        description="Создание массива случайных целых чисел.",
+    )
+    fill.add_argument(
+        "-c", "--count", type=int, required=True,
+        help=f"количество элементов (от 1 до {arrays.MAX_COUNT})",
+    )
+    fill.add_argument(
+        "--min", dest="low", type=int, default=arrays.MIN_VALUE,
+        help=f"нижняя граница значений (по умолчанию {arrays.MIN_VALUE})",
+    )
+    fill.add_argument(
+        "--max", dest="high", type=int, default=arrays.MAX_VALUE,
+        help=f"верхняя граница значений (по умолчанию {arrays.MAX_VALUE})",
+    )
+    fill.add_argument(
+        "--seed", type=int,
+        help="начальное значение генератора (целое; по умолчанию не задано)",
+    )
+    fill.add_argument(
+        "-o", "--output",
+        help="файл для массива (по умолчанию вывод на экран)",
+    )
+
+    # --- sort: сортировка массива ---
+    sort = commands.add_parser(
+        "sort", allow_abbrev=False,
+        help="отсортировать массив",
+        description="Сортировка массива целых чисел.",
+    )
+    sort.add_argument(
+        "-m", "--method", required=True, choices=sorted(sorting.METHODS),
+        help="метод сортировки",
+    )
+    sort.add_argument(
+        "--order", choices=("asc", "desc"), default="asc",
+        help="asc — по возрастанию, desc — по убыванию (по умолчанию asc)",
+    )
+    sort.add_argument(
+        "-i", "--input",
+        help="файл с массивом (по умолчанию ввод с клавиатуры)",
+    )
+    sort.add_argument(
+        "-o", "--output",
+        help="файл для результата (по умолчанию вывод на экран)",
+    )
+
+    # --- search: двоичный поиск ---
+    search = commands.add_parser(
+        "search", allow_abbrev=False,
+        help="найти число в массиве по возрастанию",
+        description="Двоичный поиск в массиве, упорядоченном по возрастанию.",
+    )
+    search.add_argument(
+        "-v", "--value", type=int, required=True,
+        help=f"искомое целое число (модуль не больше {arrays.MAX_SEARCH})",
+    )
+    search.add_argument(
+        "-i", "--input",
+        help="файл с массивом (по умолчанию ввод с клавиатуры)",
+    )
+
+
     return parser
+
+

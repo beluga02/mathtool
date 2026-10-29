@@ -1,6 +1,7 @@
 """Расчётная часть: интегрирование методом левых прямоугольников."""
 
 import math
+from calc import equation
 
 # Допустимое число шагов
 MAX_STEPS = 100000
@@ -15,12 +16,21 @@ def f_root(x):
     """F(x) = sqrt(x^2 + 1)."""
     return math.sqrt(x * x + 1)
 
+def f_test(x):
+    # "F(x) = -x ** 2 + x + 2"
+    return -x ** 2 + x + 2
 
+x1 = equation.solve(-1, 1, 2)
+# ["квадратное", d, [x1, x2]]
+# ["квадратное", d, [x1, x2]]
+# print(x1[2][0])
+# print(x1[2][1])
 # Таблица функций:
 # имя -> (функция, формула, нижняя граница, верхняя граница, границы допустимы)
 FUNCTIONS = {
     "ratio": (f_ratio, "F(x) = x / (x + 1)", 0, 20, True),
     "root": (f_root, "F(x) = sqrt(x^2 + 1)", -5, 5, False),
+    "test": (f_test, "F(x) = -x ** 2 + x + 2", x1[2][0], x1[2][1], True)
 }
 
 

@@ -1,9 +1,13 @@
 """Точка входа: выбор команды, ввод и вывод."""
 
 import sys
+import time
 
 import cli
-from calc import equation, integration, series, stats
+from calc import arrays, equation, integration, series, sorting, stats
+from calc.arrays import (MAX_SEARCH, check_bounds, check_count, check_values,
+                         fill, is_ascending, binary_search)
+from calc.sorting import METHODS
 
 NOT_EXISTS = "НЕ СУЩЕСТВУЕТ"
 
@@ -56,6 +60,78 @@ def read_values(source):
                 raise ValueError(f"'{word}' не является числом")
     return values
 
+def read_array(path):
+    """Прочитать массив из файла или с клавиатуры; проверить данные.
+
+    С клавиатуры строки читаются до EOF или до пустой строки.
+    Разделители — пробельные символы и запятые.
+    """
+    if path is not None:
+        try:
+            with open(path, encoding="utf-8-sig") as handle:
+                text = handle.read()
+        except UnicodeDecodeError:
+            raise ValueError(f"файл {path} не в кодировке UTF-8")
+        except OSError:
+            raise ValueError(f"не удалось прочитать файл {path}")
+    else:
+        # Подсказка — в stderr, чтобы не смешиваться с результатом
+        print(
+            "Введите числа; конец ввода — пустая строка или EOF.",
+            file=sys.stderr
+        )
+        lines = []
+        while True:
+            try:
+                line = input()
+            except EOFError:
+                break
+            if line.strip() == "":
+                break
+            lines.append(line)
+        text = " ".join(lines)
+
+    values = []
+    for word in text.replace(",", " ").split():
+        try:
+            values.append(int(word))
+        except ValueError:
+            raise ValueError(f"{word} не является целым числом")
+
+    arrays.check_values(values)
+    return values
+
+
+def write_array(path, values):
+    """Записать массив одной строкой в UTF-8 и сообщить об этом."""
+    try:
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(" ".join(str(x) for x in values) + "\n")
+    except OSError:
+        raise ValueError(f"не удалось записать файл {path}")
+    print(f"Записано элементов: {len(values)}, файл: {path}")
+
+
+def output_array(values, path):
+    """Вывести массив на экран или записать в файл."""
+    if path is None:
+        print(" ".join(str(x) for x in values))
+    else:
+        write_array(path, values)
+
+def measure(name, operation, params):
+    """Выполняет operation(*params), печатает время в stderr, возвращает результат."""
+    start = time.perf_counter()
+    result = operation(*params)
+    elapsed = time.perf_counter() - start
+    print(f"Время операции {name}: {elapsed:.6f} с", file=sys.stderr)
+    return result
+
+
+def error(message):
+    """Печатает сообщение об ошибке в stderr и возвращает код 1."""
+    print(f"ОШИБКА: {message}", file=sys.stderr)
+    return 1
 
 # --- Обработчики команд: возвращают код завершения ---
 
@@ -148,12 +224,55 @@ def handle_integrate(args):
 
     return 0
 
+def handle_fill(args):
+    """Команда fill."""
+    arrays.check_count(args.count)
+    arrays.check_bounds(args.low, args.high)
+
+    values = arrays.fill(args.count, args.low, args.high, args.seed)
+    output_array(values, args.output)
+
+    return 0
+
+
+def handle_sort(args):
+    """Команда sort."""
+    values = read_array(args.input)
+    method = sorting.METHODS[args.method]
+    descending = args.order == "desc"
+
+    method(values, descending)
+
+    output_array(values, args.output)
+    print("Массив успешно отсортирован.")
+
+    return 0
+
+
+def handle_search(args):
+    """Команда search."""
+    arrays.check_search_value(args.value)
+    values = read_array(args.input)
+    arrays.check_sorted(values)
+
+    index = arrays.binary_search(values, args.value)
+
+    if index is None:
+        print(f"Значение {args.value} не найдено.")
+        return 1
+
+    print(f"Значение {args.value} имеет элемент с индексом {index + 1}.")
+    return 0
+
 
 HANDLERS = {
     "solve": handle_solve,
     "stats": handle_stats,
     "series": handle_series,
     "integrate": handle_integrate,
+    "fill": handle_fill,
+    "sort": handle_sort,
+    "search": handle_search,
 }
 
 

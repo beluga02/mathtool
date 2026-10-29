@@ -22,6 +22,10 @@ def term_sqplus(n):
     """Слагаемое ряда sqplus: знак / (n^2 + 1)."""
     return sign(n) / (n * n + 1)
 
+def test(n):
+    
+    return sign(n) / (n ** 3 - 12)
+
 
 def term_third(n):
     """Слагаемое ряда third: знак / (3 * n)."""
@@ -32,6 +36,7 @@ def term_third(n):
 FORMULAS = {
     "sqplus": (term_sqplus, "S = 1/(1^2+1) - 1/(2^2+1) + 1/(3^2+1) - ..."),
     "third": (term_third, "S = 1/3 - 1/6 + 1/9 - 1/12 + ..."),
+    "test": (test, "S = 1/-11")
 }
 
 

@@ -906,3 +906,1664 @@ stdout:
 stderr:
 ОШИБКА: коэффициент B не является целым числом
 Код возврата: 1
+-----
+
+======================================================================
+1. КОМАНДА fill
+======================================================================
+
+Тест 1. fill: образец из задания (seed 42)
+Команда: python mathtool.py fill -c 5 --seed 42
+stdin: не используется
+stdout:
+63 -72 -94 89 -30
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 2. fill: повторный запуск с тем же seed даёт тот же результат
+Команда: python mathtool.py fill -c 5 --seed 42
+stdin: не используется
+stdout:
+63 -72 -94 89 -30
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 3. fill: один элемент
+Команда: python mathtool.py fill -c 1 --seed 7
+stdin: не используется
+stdout:
+-18
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 4. fill: min = max
+Команда: python mathtool.py fill -c 5 --min 3 --max 3
+stdin: не используется
+stdout:
+3 3 3 3 3
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 5. fill: свои границы
+Команда: python mathtool.py fill -c 10 --min -5 --max 5 --seed 1
+stdin: не используется
+stdout:
+-3 4 -4 -1 -4 2 2 2 5 1
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 6. fill: границы по умолчанию (-100..100)
+Команда: python mathtool.py fill -c 8 --seed 3
+stdin: не используется
+stdout:
+-40 51 39 -67 -6 54 21 60
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 7. fill: запись в файл small.txt
+Команда: python mathtool.py fill -c 20 --min -10 --max 10 --seed 1 -o small.txt
+stdin: не используется
+stdout:
+Записано элементов: 20 в файл small.txt
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 8. fill: запись в a.txt (seed 1)
+Команда: python mathtool.py fill -c 5 --seed 1 -o a.txt
+stdin: не используется
+stdout:
+Записано элементов: 5 в файл a.txt
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 9. fill: запись в b.txt (seed 1)
+Команда: python mathtool.py fill -c 5 --seed 1 -o b.txt
+stdin: не используется
+stdout:
+Записано элементов: 5 в файл b.txt
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+Проверка: содержимое a.txt и b.txt совпадает
+
+Тест 10. fill: максимальное количество (1 000 000)
+Команда: python mathtool.py fill -c 1000000 --seed 1 -o big.txt
+stdin: не используется
+stdout:
+Записано элементов: 1000000 в файл big.txt
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 11. fill: количество 0
+Команда: python mathtool.py fill -c 0
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 12. fill: отрицательное количество
+Команда: python mathtool.py fill -c -3
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 13. fill: количество больше максимума
+Команда: python mathtool.py fill -c 1000001
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 14. fill: min больше max
+Команда: python mathtool.py fill -c 5 --min 10 --max 5
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: минимальное значение больше максимального
+Код возврата: 1
+
+Тест 15. fill: min меньше -100
+Команда: python mathtool.py fill -c 5 --min -101
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: границы значений вне диапазона -100..100
+Код возврата: 1
+
+Тест 16. fill: max больше 100
+Команда: python mathtool.py fill -c 5 --max 101
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: границы значений вне диапазона -100..100
+Код возврата: 1
+
+Тест 17. fill: нельзя записать файл
+Команда: python mathtool.py fill -c 5 -o nodir/out.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+Время операции fill: <время> с
+ОШИБКА: [Errno 2] No such file or directory: 'nodir/out.txt'
+Код возврата: 1
+
+Тест 18. fill: не указан -c
+Команда: python mathtool.py fill
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool fill: error: the following arguments are required: -c/--count
+Код возврата: 2
+
+Тест 19. fill: -c не число
+Команда: python mathtool.py fill -c abc
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool fill: error: argument -c/--count: invalid int value: 'abc'
+Код возврата: 2
+
+Тест 20. fill: seed не целое
+Команда: python mathtool.py fill -c 5 --seed 1.5
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool fill: error: argument --seed: invalid int value: '1.5'
+Код возврата: 2
+
+Тест 21. fill: сокращение параметра запрещено
+Команда: python mathtool.py fill -c 5 --cou 3
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool: error: unrecognized arguments: --cou 3
+Код возврата: 2
+
+======================================================================
+2. КОМАНДА sort
+======================================================================
+
+Тест 22. sort bubble (образец из задания)
+Команда: python mathtool.py sort -m bubble -i example.txt
+stdin: не используется
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 23. sort selection с записью в файл
+Команда: python mathtool.py sort -m selection -i example.txt -o example_sorted.txt
+stdin: не используется
+stdout:
+Записано элементов: 5 в файл example_sorted.txt
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 24. sort insertion (образец из задания)
+Команда: python mathtool.py sort -m insertion -i example.txt
+stdin: не используется
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 25. sort counting по убыванию (образец из задания)
+Команда: python mathtool.py sort -m counting -i example.txt --order desc
+stdin: не используется
+stdout:
+81 43 24 -5 -76
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 26. sort: --order asc указан явно
+Команда: python mathtool.py sort -m bubble -i example.txt --order asc
+stdin: не используется
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 27. sort: сквозной сценарий из постановки (small.txt -> sorted.txt)
+Команда: python mathtool.py sort -m counting -i small.txt -o sorted.txt
+stdin: не используется
+stdout:
+Записано элементов: 20 в файл sorted.txt
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 28. sort bubble, example.txt (общий случай), по возрастанию
+Команда: python mathtool.py sort -m bubble -i example.txt --order asc
+stdin: не используется
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 29. sort bubble, example.txt (общий случай), по убыванию
+Команда: python mathtool.py sort -m bubble -i example.txt --order desc
+stdin: не используется
+stdout:
+81 43 24 -5 -76
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 30. sort bubble, dup.txt (повторы), по возрастанию
+Команда: python mathtool.py sort -m bubble -i dup.txt --order asc
+stdin: не используется
+stdout:
+-2 3 3 5 5
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 31. sort bubble, dup.txt (повторы), по убыванию
+Команда: python mathtool.py sort -m bubble -i dup.txt --order desc
+stdin: не используется
+stdout:
+5 5 3 3 -2
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 32. sort bubble, ready.txt (готовый порядок), по возрастанию
+Команда: python mathtool.py sort -m bubble -i ready.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 33. sort bubble, ready.txt (готовый порядок), по убыванию
+Команда: python mathtool.py sort -m bubble -i ready.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 34. sort bubble, rev.txt (обратный порядок), по возрастанию
+Команда: python mathtool.py sort -m bubble -i rev.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 35. sort bubble, rev.txt (обратный порядок), по убыванию
+Команда: python mathtool.py sort -m bubble -i rev.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 36. sort bubble, one.txt (один элемент), по возрастанию
+Команда: python mathtool.py sort -m bubble -i one.txt --order asc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 37. sort bubble, one.txt (один элемент), по убыванию
+Команда: python mathtool.py sort -m bubble -i one.txt --order desc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 38. sort bubble, comma.txt (запятые), по возрастанию
+Команда: python mathtool.py sort -m bubble -i comma.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 39. sort bubble, comma.txt (запятые), по убыванию
+Команда: python mathtool.py sort -m bubble -i comma.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 40. sort bubble, multi.txt (несколько строк), по возрастанию
+Команда: python mathtool.py sort -m bubble -i multi.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 41. sort bubble, multi.txt (несколько строк), по убыванию
+Команда: python mathtool.py sort -m bubble -i multi.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 42. sort bubble, bound.txt (граничные значения), по возрастанию
+Команда: python mathtool.py sort -m bubble -i bound.txt --order asc
+stdin: не используется
+stdout:
+-100 0 100
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 43. sort bubble, bound.txt (граничные значения), по убыванию
+Команда: python mathtool.py sort -m bubble -i bound.txt --order desc
+stdin: не используется
+stdout:
+100 0 -100
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 44. sort bubble, all_equal.txt (все элементы равны), по возрастанию
+Команда: python mathtool.py sort -m bubble -i all_equal.txt --order asc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 45. sort bubble, all_equal.txt (все элементы равны), по убыванию
+Команда: python mathtool.py sort -m bubble -i all_equal.txt --order desc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 46. sort bubble, bom.txt (BOM в начале файла), по возрастанию
+Команда: python mathtool.py sort -m bubble -i bom.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 47. sort bubble, bom.txt (BOM в начале файла), по убыванию
+Команда: python mathtool.py sort -m bubble -i bom.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 48. sort selection, example.txt (общий случай), по возрастанию
+Команда: python mathtool.py sort -m selection -i example.txt --order asc
+stdin: не используется
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 49. sort selection, example.txt (общий случай), по убыванию
+Команда: python mathtool.py sort -m selection -i example.txt --order desc
+stdin: не используется
+stdout:
+81 43 24 -5 -76
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 50. sort selection, dup.txt (повторы), по возрастанию
+Команда: python mathtool.py sort -m selection -i dup.txt --order asc
+stdin: не используется
+stdout:
+-2 3 3 5 5
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 51. sort selection, dup.txt (повторы), по убыванию
+Команда: python mathtool.py sort -m selection -i dup.txt --order desc
+stdin: не используется
+stdout:
+5 5 3 3 -2
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 52. sort selection, ready.txt (готовый порядок), по возрастанию
+Команда: python mathtool.py sort -m selection -i ready.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 53. sort selection, ready.txt (готовый порядок), по убыванию
+Команда: python mathtool.py sort -m selection -i ready.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 54. sort selection, rev.txt (обратный порядок), по возрастанию
+Команда: python mathtool.py sort -m selection -i rev.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 55. sort selection, rev.txt (обратный порядок), по убыванию
+Команда: python mathtool.py sort -m selection -i rev.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 56. sort selection, one.txt (один элемент), по возрастанию
+Команда: python mathtool.py sort -m selection -i one.txt --order asc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 57. sort selection, one.txt (один элемент), по убыванию
+Команда: python mathtool.py sort -m selection -i one.txt --order desc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 58. sort selection, comma.txt (запятые), по возрастанию
+Команда: python mathtool.py sort -m selection -i comma.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 59. sort selection, comma.txt (запятые), по убыванию
+Команда: python mathtool.py sort -m selection -i comma.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 60. sort selection, multi.txt (несколько строк), по возрастанию
+Команда: python mathtool.py sort -m selection -i multi.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 61. sort selection, multi.txt (несколько строк), по убыванию
+Команда: python mathtool.py sort -m selection -i multi.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 62. sort selection, bound.txt (граничные значения), по возрастанию
+Команда: python mathtool.py sort -m selection -i bound.txt --order asc
+stdin: не используется
+stdout:
+-100 0 100
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 63. sort selection, bound.txt (граничные значения), по убыванию
+Команда: python mathtool.py sort -m selection -i bound.txt --order desc
+stdin: не используется
+stdout:
+100 0 -100
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 64. sort selection, all_equal.txt (все элементы равны), по возрастанию
+Команда: python mathtool.py sort -m selection -i all_equal.txt --order asc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 65. sort selection, all_equal.txt (все элементы равны), по убыванию
+Команда: python mathtool.py sort -m selection -i all_equal.txt --order desc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 66. sort selection, bom.txt (BOM в начале файла), по возрастанию
+Команда: python mathtool.py sort -m selection -i bom.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 67. sort selection, bom.txt (BOM в начале файла), по убыванию
+Команда: python mathtool.py sort -m selection -i bom.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 68. sort insertion, example.txt (общий случай), по возрастанию
+Команда: python mathtool.py sort -m insertion -i example.txt --order asc
+stdin: не используется
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 69. sort insertion, example.txt (общий случай), по убыванию
+Команда: python mathtool.py sort -m insertion -i example.txt --order desc
+stdin: не используется
+stdout:
+81 43 24 -5 -76
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 70. sort insertion, dup.txt (повторы), по возрастанию
+Команда: python mathtool.py sort -m insertion -i dup.txt --order asc
+stdin: не используется
+stdout:
+-2 3 3 5 5
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 71. sort insertion, dup.txt (повторы), по убыванию
+Команда: python mathtool.py sort -m insertion -i dup.txt --order desc
+stdin: не используется
+stdout:
+5 5 3 3 -2
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 72. sort insertion, ready.txt (готовый порядок), по возрастанию
+Команда: python mathtool.py sort -m insertion -i ready.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 73. sort insertion, ready.txt (готовый порядок), по убыванию
+Команда: python mathtool.py sort -m insertion -i ready.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 74. sort insertion, rev.txt (обратный порядок), по возрастанию
+Команда: python mathtool.py sort -m insertion -i rev.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 75. sort insertion, rev.txt (обратный порядок), по убыванию
+Команда: python mathtool.py sort -m insertion -i rev.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 76. sort insertion, one.txt (один элемент), по возрастанию
+Команда: python mathtool.py sort -m insertion -i one.txt --order asc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 77. sort insertion, one.txt (один элемент), по убыванию
+Команда: python mathtool.py sort -m insertion -i one.txt --order desc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 78. sort insertion, comma.txt (запятые), по возрастанию
+Команда: python mathtool.py sort -m insertion -i comma.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 79. sort insertion, comma.txt (запятые), по убыванию
+Команда: python mathtool.py sort -m insertion -i comma.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 80. sort insertion, multi.txt (несколько строк), по возрастанию
+Команда: python mathtool.py sort -m insertion -i multi.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 81. sort insertion, multi.txt (несколько строк), по убыванию
+Команда: python mathtool.py sort -m insertion -i multi.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 82. sort insertion, bound.txt (граничные значения), по возрастанию
+Команда: python mathtool.py sort -m insertion -i bound.txt --order asc
+stdin: не используется
+stdout:
+-100 0 100
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 83. sort insertion, bound.txt (граничные значения), по убыванию
+Команда: python mathtool.py sort -m insertion -i bound.txt --order desc
+stdin: не используется
+stdout:
+100 0 -100
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 84. sort insertion, all_equal.txt (все элементы равны), по возрастанию
+Команда: python mathtool.py sort -m insertion -i all_equal.txt --order asc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 85. sort insertion, all_equal.txt (все элементы равны), по убыванию
+Команда: python mathtool.py sort -m insertion -i all_equal.txt --order desc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 86. sort insertion, bom.txt (BOM в начале файла), по возрастанию
+Команда: python mathtool.py sort -m insertion -i bom.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 87. sort insertion, bom.txt (BOM в начале файла), по убыванию
+Команда: python mathtool.py sort -m insertion -i bom.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 88. sort counting, example.txt (общий случай), по возрастанию
+Команда: python mathtool.py sort -m counting -i example.txt --order asc
+stdin: не используется
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 89. sort counting, example.txt (общий случай), по убыванию
+Команда: python mathtool.py sort -m counting -i example.txt --order desc
+stdin: не используется
+stdout:
+81 43 24 -5 -76
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 90. sort counting, dup.txt (повторы), по возрастанию
+Команда: python mathtool.py sort -m counting -i dup.txt --order asc
+stdin: не используется
+stdout:
+-2 3 3 5 5
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 91. sort counting, dup.txt (повторы), по убыванию
+Команда: python mathtool.py sort -m counting -i dup.txt --order desc
+stdin: не используется
+stdout:
+5 5 3 3 -2
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 92. sort counting, ready.txt (готовый порядок), по возрастанию
+Команда: python mathtool.py sort -m counting -i ready.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 93. sort counting, ready.txt (готовый порядок), по убыванию
+Команда: python mathtool.py sort -m counting -i ready.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 94. sort counting, rev.txt (обратный порядок), по возрастанию
+Команда: python mathtool.py sort -m counting -i rev.txt --order asc
+stdin: не используется
+stdout:
+1 2 3 4 5
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 95. sort counting, rev.txt (обратный порядок), по убыванию
+Команда: python mathtool.py sort -m counting -i rev.txt --order desc
+stdin: не используется
+stdout:
+5 4 3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 96. sort counting, one.txt (один элемент), по возрастанию
+Команда: python mathtool.py sort -m counting -i one.txt --order asc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 97. sort counting, one.txt (один элемент), по убыванию
+Команда: python mathtool.py sort -m counting -i one.txt --order desc
+stdin: не используется
+stdout:
+7
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 98. sort counting, comma.txt (запятые), по возрастанию
+Команда: python mathtool.py sort -m counting -i comma.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 99. sort counting, comma.txt (запятые), по убыванию
+Команда: python mathtool.py sort -m counting -i comma.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 100. sort counting, multi.txt (несколько строк), по возрастанию
+Команда: python mathtool.py sort -m counting -i multi.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 101. sort counting, multi.txt (несколько строк), по убыванию
+Команда: python mathtool.py sort -m counting -i multi.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 102. sort counting, bound.txt (граничные значения), по возрастанию
+Команда: python mathtool.py sort -m counting -i bound.txt --order asc
+stdin: не используется
+stdout:
+-100 0 100
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 103. sort counting, bound.txt (граничные значения), по убыванию
+Команда: python mathtool.py sort -m counting -i bound.txt --order desc
+stdin: не используется
+stdout:
+100 0 -100
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 104. sort counting, all_equal.txt (все элементы равны), по возрастанию
+Команда: python mathtool.py sort -m counting -i all_equal.txt --order asc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 105. sort counting, all_equal.txt (все элементы равны), по убыванию
+Команда: python mathtool.py sort -m counting -i all_equal.txt --order desc
+stdin: не используется
+stdout:
+2 2 2
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 106. sort counting, bom.txt (BOM в начале файла), по возрастанию
+Команда: python mathtool.py sort -m counting -i bom.txt --order asc
+stdin: не используется
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 107. sort counting, bom.txt (BOM в начале файла), по убыванию
+Команда: python mathtool.py sort -m counting -i bom.txt --order desc
+stdin: не используется
+stdout:
+3 2 1
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 108. sort counting: 1 000 000 элементов
+Команда: python mathtool.py sort -m counting -i big.txt -o big_sorted.txt
+stdin: не используется
+stdout:
+Записано элементов: 1000000 в файл big_sorted.txt
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 109. подготовка: fill 1000 элементов
+Команда: python mathtool.py fill -c 1000 --seed 1 -o data_1000.txt
+stdin: не используется
+stdout:
+Записано элементов: 1000 в файл data_1000.txt
+stderr:
+Время операции fill: <время> с
+Код возврата: 0
+
+Тест 110. sort bubble: 1000 элементов, результат в файл
+Команда: python mathtool.py sort -m bubble -i data_1000.txt -o out_1000_bubble.txt
+stdin: не используется
+stdout:
+Записано элементов: 1000 в файл out_1000_bubble.txt
+Массив отсортирован.
+stderr:
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 111. sort selection: 1000 элементов, результат в файл
+Команда: python mathtool.py sort -m selection -i data_1000.txt -o out_1000_selection.txt
+stdin: не используется
+stdout:
+Записано элементов: 1000 в файл out_1000_selection.txt
+Массив отсортирован.
+stderr:
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 112. sort insertion: 1000 элементов, результат в файл
+Команда: python mathtool.py sort -m insertion -i data_1000.txt -o out_1000_insertion.txt
+stdin: не используется
+stdout:
+Записано элементов: 1000 в файл out_1000_insertion.txt
+Массив отсортирован.
+stderr:
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 113. sort counting: 1000 элементов, результат в файл
+Команда: python mathtool.py sort -m counting -i data_1000.txt -o out_1000_counting.txt
+stdin: не используется
+stdout:
+Записано элементов: 1000 в файл out_1000_counting.txt
+Массив отсортирован.
+stderr:
+Время операции sort (counting): <время> с
+Код возврата: 0
+Проверка: файлы out_1000_bubble.txt, out_1000_selection.txt, out_1000_insertion.txt, out_1000_counting.txt совпадают
+
+Тест 114. sort: ввод с клавиатуры, конец — пустая строка
+Команда: python mathtool.py sort -m bubble
+stdin: (вручную) ввести «24 -76 81 43 -5», затем пустую строку
+stdout:
+-76 -5 24 43 81
+Массив отсортирован.
+stderr:
+Введите числа (пустая строка — конец): 24 -76 81 43 -5
+Введите числа (пустая строка — конец): 
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 115. sort: ввод с клавиатуры, конец — EOF
+Команда: python mathtool.py sort -m selection
+stdin: (вручную) ввести «3 1 2», затем Ctrl+D (в Windows Ctrl+Z, затем Enter)
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Введите числа (пустая строка — конец): 3 1 2
+Введите числа (пустая строка — конец): 
+Время операции sort (selection): <время> с
+Код возврата: 0
+
+Тест 116. sort: ввод с клавиатуры в несколько строк
+Команда: python mathtool.py sort -m insertion
+stdin: (вручную) ввести «3 1», «2», затем пустую строку
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Введите числа (пустая строка — конец): 3 1
+Введите числа (пустая строка — конец): 2
+Введите числа (пустая строка — конец): 
+Время операции sort (insertion): <время> с
+Код возврата: 0
+
+Тест 117. sort: конец ввода — строка из пробелов
+Команда: python mathtool.py sort -m counting
+stdin: (вручную) ввести «3 1», затем строку из пробелов
+stdout:
+1 3
+Массив отсортирован.
+stderr:
+Введите числа (пустая строка — конец): 3 1
+Введите числа (пустая строка — конец): 
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 118. sort: запятые при вводе с клавиатуры
+Команда: python mathtool.py sort -m bubble
+stdin: (вручную) ввести «3, 1,», «2», затем пустую строку
+stdout:
+1 2 3
+Массив отсортирован.
+stderr:
+Введите числа (пустая строка — конец): 3, 1,
+Введите числа (пустая строка — конец): 2
+Введите числа (пустая строка — конец): 
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 119. sort: ввод с клавиатуры и запись в файл
+Команда: python mathtool.py sort -m bubble -o kb.txt
+stdin: (вручную) ввести «5 1 4», затем пустую строку
+stdout:
+Записано элементов: 3 в файл kb.txt
+Массив отсортирован.
+stderr:
+Введите числа (пустая строка — конец): 5 1 4
+Введите числа (пустая строка — конец): 
+Время операции sort (bubble): <время> с
+Код возврата: 0
+
+Тест 120. sort: ввод с клавиатуры, по убыванию
+Команда: python mathtool.py sort -m counting --order desc
+stdin: (вручную) ввести «5 1 4», затем пустую строку
+stdout:
+5 4 1
+Массив отсортирован.
+stderr:
+Введите числа (пустая строка — конец): 5 1 4
+Введите числа (пустая строка — конец): 
+Время операции sort (counting): <время> с
+Код возврата: 0
+
+Тест 121. sort: пустой ввод (пустая строка)
+Команда: python mathtool.py sort -m bubble
+stdin: (вручную) ввести сразу пустую строку
+stdout:
+(пусто)
+stderr:
+Введите числа (пустая строка — конец): 
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 122. sort: пустой ввод (сразу EOF)
+Команда: python mathtool.py sort -m bubble
+stdin: (вручную) ввести сразу Ctrl+D (в Windows Ctrl+Z, затем Enter)
+stdout:
+(пусто)
+stderr:
+Введите числа (пустая строка — конец): 
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 123. sort: нецелое слово при вводе с клавиатуры
+Команда: python mathtool.py sort -m bubble
+stdin: (вручную) ввести «abc», затем пустую строку
+stdout:
+(пусто)
+stderr:
+Введите числа (пустая строка — конец): abc
+Введите числа (пустая строка — конец): 
+ОШИБКА: в данных есть не целое число
+Код возврата: 1
+
+Тест 124. sort: значение вне диапазона при вводе с клавиатуры
+Команда: python mathtool.py sort -m bubble
+stdin: (вручную) ввести «101», затем пустую строку
+stdout:
+(пусто)
+stderr:
+Введите числа (пустая строка — конец): 101
+Введите числа (пустая строка — конец): 
+ОШИБКА: значение 101 вне диапазона -100..100
+Код возврата: 1
+
+Тест 125. sort: слово вместо числа в файле
+Команда: python mathtool.py sort -m bubble -i bad_word.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: в данных есть не целое число
+Код возврата: 1
+
+Тест 126. sort: дробное число в файле
+Команда: python mathtool.py sort -m bubble -i float.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: в данных есть не целое число
+Код возврата: 1
+
+Тест 127. sort: значение вне диапазона в файле
+Команда: python mathtool.py sort -m bubble -i bad_range.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: значение 101 вне диапазона -100..100
+Код возврата: 1
+
+Тест 128. sort: пустой файл
+Команда: python mathtool.py sort -m bubble -i empty.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 129. sort: файл не существует
+Команда: python mathtool.py sort -m bubble -i nofile.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: [Errno 2] No such file or directory: 'nofile.txt'
+Код возврата: 1
+
+Тест 130. sort: слишком много элементов (1 000 001)
+Команда: python mathtool.py sort -m counting -i big_plus.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 131. sort: нельзя записать результат
+Команда: python mathtool.py sort -m bubble -i example.txt -o nodir/out.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+Время операции sort (bubble): <время> с
+ОШИБКА: [Errno 2] No such file or directory: 'nodir/out.txt'
+Код возврата: 1
+
+Тест 132. sort: не указан -m
+Команда: python mathtool.py sort -i example.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool sort: error: the following arguments are required: -m/--method
+Код возврата: 2
+
+Тест 133. sort: неизвестный метод
+Команда: python mathtool.py sort -m quick -i example.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool sort: error: argument -m/--method: invalid choice: 'quick' (choose from 'bubble', 'counting', 'insertion', 'selection')
+Код возврата: 2
+
+Тест 134. sort: неизвестное направление
+Команда: python mathtool.py sort -m bubble --order up -i example.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool sort: error: argument --order: invalid choice: 'up' (choose from 'asc', 'desc')
+Код возврата: 2
+
+Тест 135. sort: у -i нет значения
+Команда: python mathtool.py sort -m bubble -i
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool sort: error: argument -i/--input: expected one argument
+Код возврата: 2
+
+======================================================================
+3. КОМАНДА search
+======================================================================
+
+Тест 136. search: найденное значение (образец из задания)
+Команда: python mathtool.py search -v 43 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение 43 имеет элемент с индексом 4.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 137. search: отсутствующее значение (образец из задания)
+Команда: python mathtool.py search -v 15 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение 15 не найдено.
+stderr:
+Время операции search: <время> с
+Код возврата: 1
+
+Тест 138. search: первый элемент
+Команда: python mathtool.py search -v -76 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение -76 имеет элемент с индексом 1.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 139. search: последний элемент
+Команда: python mathtool.py search -v 81 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение 81 имеет элемент с индексом 5.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 140. search: средний элемент
+Команда: python mathtool.py search -v 24 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение 24 имеет элемент с индексом 3.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 141. search: значение меньше минимума массива
+Команда: python mathtool.py search -v -100 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение -100 не найдено.
+stderr:
+Время операции search: <время> с
+Код возврата: 1
+
+Тест 142. search: значение больше максимума массива
+Команда: python mathtool.py search -v 100 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение 100 не найдено.
+stderr:
+Время операции search: <время> с
+Код возврата: 1
+
+Тест 143. search: граница MAX_SEARCH (1000)
+Команда: python mathtool.py search -v 1000 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение 1000 не найдено.
+stderr:
+Время операции search: <время> с
+Код возврата: 1
+
+Тест 144. search: граница -MAX_SEARCH (-1000)
+Команда: python mathtool.py search -v -1000 -i example_sorted.txt
+stdin: не используется
+stdout:
+Значение -1000 не найдено.
+stderr:
+Время операции search: <время> с
+Код возврата: 1
+
+Тест 145. search: один элемент, найден
+Команда: python mathtool.py search -v 7 -i one.txt
+stdin: не используется
+stdout:
+Значение 7 имеет элемент с индексом 1.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 146. search: один элемент, не найден
+Команда: python mathtool.py search -v 8 -i one.txt
+stdin: не используется
+stdout:
+Значение 8 не найдено.
+stderr:
+Время операции search: <время> с
+Код возврата: 1
+
+Тест 147. search: повторы (допустимо любое вхождение)
+Команда: python mathtool.py search -v 3 -i dups_sorted.txt
+stdin: не используется
+stdout:
+Значение 3 имеет элемент с индексом 2.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 148. search: все элементы равны
+Команда: python mathtool.py search -v 2 -i all_equal.txt
+stdin: не используется
+stdout:
+Значение 2 имеет элемент с индексом 2.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 149. search: упорядоченный файл ready.txt
+Команда: python mathtool.py search -v 3 -i ready.txt
+stdin: не используется
+stdout:
+Значение 3 имеет элемент с индексом 3.
+stderr:
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 150. search: неупорядоченный массив (example.txt)
+Команда: python mathtool.py search -v 43 -i example.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: массив не упорядочен по возрастанию
+Код возврата: 1
+
+Тест 151. search: массив по убыванию
+Команда: python mathtool.py search -v 5 -i rev.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: массив не упорядочен по возрастанию
+Код возврата: 1
+
+Тест 152. search: неупорядоченный с повторами
+Команда: python mathtool.py search -v 3 -i dup.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: массив не упорядочен по возрастанию
+Код возврата: 1
+
+Тест 153. search: неупорядоченный bound.txt
+Команда: python mathtool.py search -v 0 -i bound.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: массив не упорядочен по возрастанию
+Код возврата: 1
+
+Тест 154. search: значение больше 1000
+Команда: python mathtool.py search -v 1001 -i example_sorted.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: модуль искомого значения больше 1000
+Код возврата: 1
+
+Тест 155. search: значение меньше -1000
+Команда: python mathtool.py search -v -1001 -i example_sorted.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: модуль искомого значения больше 1000
+Код возврата: 1
+
+Тест 156. search: значение проверяется до чтения файла
+Команда: python mathtool.py search -v 1001 -i nofile.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: модуль искомого значения больше 1000
+Код возврата: 1
+
+Тест 157. search: ввод с клавиатуры, пустая строка
+Команда: python mathtool.py search -v 2
+stdin: (вручную) ввести «1 2 3», затем пустую строку
+stdout:
+Значение 2 имеет элемент с индексом 2.
+stderr:
+Введите числа (пустая строка — конец): 1 2 3
+Введите числа (пустая строка — конец): 
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 158. search: ввод с клавиатуры, EOF и запятые
+Команда: python mathtool.py search -v 3
+stdin: (вручную) ввести «1, 2, 3», затем Ctrl+D (в Windows Ctrl+Z, затем Enter)
+stdout:
+Значение 3 имеет элемент с индексом 3.
+stderr:
+Введите числа (пустая строка — конец): 1, 2, 3
+Введите числа (пустая строка — конец): 
+Время операции search: <время> с
+Код возврата: 0
+
+Тест 159. search: ввод с клавиатуры, не найдено
+Команда: python mathtool.py search -v 9
+stdin: (вручную) ввести «1 2 3», затем пустую строку
+stdout:
+Значение 9 не найдено.
+stderr:
+Введите числа (пустая строка — конец): 1 2 3
+Введите числа (пустая строка — конец): 
+Время операции search: <время> с
+Код возврата: 1
+
+Тест 160. search: ввод с клавиатуры, неупорядоченный массив
+Команда: python mathtool.py search -v 2
+stdin: (вручную) ввести «3 2 1», затем пустую строку
+stdout:
+(пусто)
+stderr:
+Введите числа (пустая строка — конец): 3 2 1
+Введите числа (пустая строка — конец): 
+ОШИБКА: массив не упорядочен по возрастанию
+Код возврата: 1
+
+Тест 161. search: слово вместо числа в файле
+Команда: python mathtool.py search -v 1 -i bad_word.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: в данных есть не целое число
+Код возврата: 1
+
+Тест 162. search: значение вне диапазона в файле
+Команда: python mathtool.py search -v 1 -i bad_range.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: значение 101 вне диапазона -100..100
+Код возврата: 1
+
+Тест 163. search: пустой файл
+Команда: python mathtool.py search -v 1 -i empty.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: количество элементов вне диапазона 1..1000000
+Код возврата: 1
+
+Тест 164. search: файл не существует
+Команда: python mathtool.py search -v 1 -i nofile.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+ОШИБКА: [Errno 2] No such file or directory: 'nofile.txt'
+Код возврата: 1
+
+Тест 165. search: не указан -v
+Команда: python mathtool.py search -i example_sorted.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool search: error: the following arguments are required: -v/--value
+Код возврата: 2
+
+Тест 166. search: -v не число
+Команда: python mathtool.py search -v abc -i example_sorted.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool search: error: argument -v/--value: invalid int value: 'abc'
+Код возврата: 2
+
+Тест 167. search: -v не целое
+Команда: python mathtool.py search -v 2.5 -i example_sorted.txt
+stdin: не используется
+stdout:
+(пусто)
+stderr:
+usage: ... (строка usage)
+mathtool search: error: argument -v/--value: invalid int value: '2.5'
+Код возврата: 2
+
+
